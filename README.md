@@ -18,7 +18,7 @@
       - [General features to model this kind of problem](#general-features-to-model-this-kind-of-problem)
         * [Relational databases:](#relational-databases)
         * [NoSQL databases](#nosql-databases)
-        * [New kids on the block](#new-kids-on-the-block----fauna-db--https---faunacom--)
+        * [New kids on the block](#new-kids-on-the-block--fauna-db)
      * [Summary and reflection](#summary-and-reflection)
 
 # Storage service
