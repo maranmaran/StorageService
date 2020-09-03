@@ -31,7 +31,7 @@ namespace StorageService.API.Controllers
             //    addItemFactory: _ => Mediator.Send(new GetFolderFilesRecusivelyQuery(parentFolderId, name),
             //        cancellationToken));
 
-            return Ok(await Mediator.Send(new GetFolderFilesRecusivelyQuery(parentFolderId, name), cancellationToken)));
+            return Ok(await Mediator.Send(new GetFolderFilesRecusivelyQuery(parentFolderId, name), cancellationToken));
         }
 
         /// <summary>
