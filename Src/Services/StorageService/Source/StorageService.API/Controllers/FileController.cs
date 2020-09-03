@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StorageService.Business.Commands.File.Create;
 using StorageService.Business.Commands.File.Delete;
 using StorageService.Business.Queries.File.GetFolderFiles;
 using StorageService.Business.Queries.File.GetFolderFilesRecusivelyQuery;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace StorageService.API.Controllers
 {
@@ -25,7 +25,13 @@ namespace StorageService.API.Controllers
         [HttpGet("Search")]
         public async Task<IActionResult> GetFilesInsideFolderStructure([FromQuery] string name, [FromQuery] Guid? parentFolderId, CancellationToken cancellationToken = default)
         {
-            return Ok(await Mediator.Send(new GetFolderFilesRecusivelyQuery(parentFolderId, name), cancellationToken));
+            // TODO: implement some caching layer and key invalidation based on pattern
+            //var result= await Cache.GetOrAddAsync(
+            //    key: $"{parentFolderId}/{name}",
+            //    addItemFactory: _ => Mediator.Send(new GetFolderFilesRecusivelyQuery(parentFolderId, name),
+            //        cancellationToken));
+
+            return Ok(await Mediator.Send(new GetFolderFilesRecusivelyQuery(parentFolderId, name), cancellationToken)));
         }
 
         /// <summary>
