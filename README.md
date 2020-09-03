@@ -169,9 +169,9 @@ These databases are a way to go if we have deep and stretched out data. Where re
 
 They allow for deep traversals, faster then other databases. Fast when searching relationships.
 
-Cons? 
-•	They are still a relatively new growing technology?
-•	Developer knowledge?
+Cons?
+* They are still a relatively new growing technology?
+* Developer knowledge?
 
 Glimpse on how [Neo4J](https://neo4j.com/graphgist/enterprise-content-management-with-neo4j) would tackle content management system
 
