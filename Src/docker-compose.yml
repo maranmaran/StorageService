@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+
+    #DATA  =========================================================================================================
+    sql.data:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+ 
+
+    #LOGGING =========================================================================================================
+    seq:
+        image: datalust/seq:latest
+        hostname: seq
+        restart: unless-stopped
+        volumes:
+            - ./seq-data:/data
+
+
+    #SERVICES =========================================================================================================
+
+    storage.api:
+        image: ${REGISTRY:-storageapp}/storage.api:${PLATFORM:-linux}-${TAG:-latest}
+        build:
+            context: .
+            dockerfile: Services/StorageService/Source/StorageService.API/Dockerfile    
+        depends_on:
+            - sql.data

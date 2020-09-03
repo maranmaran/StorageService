@@ -1,0 +1,34 @@
+version: '3.4'
+
+# The default docker-compose.override file can use the "localhost" as the external name for testing web apps within the same dev machine. 
+# The STORAGECLONE_EXTERNAL_DNS_NAME_OR_IP environment variable is taken, by default, from the ".env" file defined like: 
+#     STORAGECLONE_EXTERNAL_DNS_NAME_OR_IP=localhost
+# but values present in the environment vars at runtime will always override those defined inside the .env file
+
+services:
+
+    #DATA =======================================================================================================
+    sql.data:
+        environment:
+            - SA_PASSWORD=Pass@word
+            - ACCEPT_EULA=Y
+        ports:
+            - "5433:1433"    # Important: In a production environment your should remove the external port
+
+    #LOGGING =======================================================================================================
+    seq:
+        environment:
+          - ACCEPT_EULA=Y
+        ports:
+          - "5341:80"
+
+    #SERVICES =======================================================================================================
+    storage.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=${STORAGECLONE_ENVIRONMENT_DEV}
+            - DatabaseSettings__ConnectionString=${STORAGECLONE_STORAGE_DB}
+
+        ports:
+            - "5101:80" # Important: In a production environment your should remove the external port (5101) kept here for microservice debugging purposes. 
+                        # The API Gateway redirects and access through the internal port (80). 
+    
