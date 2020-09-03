@@ -14,11 +14,10 @@
   * [Database choices and how to improve ?](#database-choices-and-how-to-improve-)
     + [Problem](#problem)
     + [Requirements](#requirements)
-    + [Databases](#databases)
+    + [Databases:](#databases-)
       - [General features to model this kind of problem](#general-features-to-model-this-kind-of-problem)
-        * [Relational databases](#relational-databases)
-        * [Document databases](#document-databases)
-        * [Graph databases](#graph-databases)
+        * [Relational databases:](#relational-databases)
+        * [NoSQL databases](#nosql-databases)
 
 # Storage service
 
@@ -132,7 +131,7 @@ Generally speaking, we’ll have to decide between fast read or fast write times
     * Fast queries    
     * Scaling problems when paths grow
 
-##### Relational databases:
+#### Relational databases:
 Even though RDMS have trouble with nested structures and unknown depths. 
 
 Modern databases offer some tools with which we can tackle this problem.
@@ -141,8 +140,9 @@ Like [MSSQL HierarchyId](https://docs.microsoft.com/en-us/sql/t-sql/data-types/h
 
 One additional con is that we can scale them only vertically and we potentially expect large volume of data.
 
-##### Document databases:
+#### NoSQL databases:
 
+##### Wide column document
 Great for small scale hierarchical data with relatively small amount of children for each entry. 
 
 More flexible and data structure is not fixed. Can scale horizontally.
