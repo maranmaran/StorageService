@@ -181,6 +181,11 @@ Other things that come to mind:
         * With server push once it’s done via sockets.
 *	Since our databases will only keep records… we will actually store files on some blob storage say S3 or Azure variant..
 
+##### New kids on the block ? [Fauna DB](https://fauna.com/)
+* Use GraphQL to query the database
+* Under the hood Fauna decides which of the 7 dabase paradigms to best use based on GraphQL query
+* ACID compliant, Fast, less worry about infrastructure
+
 #### Summary and reflection
 
 Personally, I’d probably go with Mongo + ES + Blob storage DA layer. 
