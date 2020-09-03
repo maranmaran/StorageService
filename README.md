@@ -97,7 +97,11 @@ Problem
 
 ## Database choices and how to improve ?
 
-I understand the task was supposed to check on my code writing and organizing skills. I feel like time limit was far too low if we wish to do this problem right. So, I’ll try to write some additional things below on what we can consider and how to implement solution.
+I understand the task was supposed to check on my code writing and organizing skills. 
+
+I feel like time limit was a tiny bit low if we wish to do this problem right. 
+
+So, I’ll try to write some additional thoughts below on what we can consider and how to implement solution.
 
 ### Problem:
 Structured file management system containing potentially limitless depth and limitless children per level.
@@ -177,7 +181,10 @@ Other things that come to mind:
         * With server push once it’s done via sockets.
 *	Since our databases will only keep records… we will actually store files on some blob storage say S3 or Azure variant..
 
-Personally, I’d probably go with Mongo + ES + Blob storage DA layer. With some caching mechanism. If we have lots of data to delete, I’d probably utilize that async deletion with server push to let the client know that process is done.
+#### Summary and reflection
+
+Personally, I’d probably go with Mongo + ES + Blob storage DA layer. 
+With some caching mechanism. If we have lots of data to delete, I’d probably utilize that async deletion with server push to let the client know that process is done.
 
 
 
