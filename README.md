@@ -138,13 +138,17 @@ Generally speaking, we’ll have to decide between fast read or fast write times
     * Scaling problems when paths grow
 
 #### Relational databases:
-Even though RDMS have trouble with nested structures and unknown depths. 
+Even though RDMS have trouble with nested structures, unknown depths and scaling (vertically only). 
 
 Modern databases offer some tools with which we can tackle this problem.
 
 Like [MSSQL HierarchyId](https://docs.microsoft.com/en-us/sql/t-sql/data-types/hierarchyid-data-type-method-reference?redirectedfrom=MSDN&view=sql-server-ver15) for storing position in hierarchy or recursive query support.
 
-One additional con is that we can scale them only vertically and we potentially expect large volume of data.
+My implementation was initially with self referencing table but that just introduced a bit more complex and slower queries.
+However, even though EF Core states it released support for HierarchyId I didn't really see that. 
+So I opted out to implementing my own HierarchyId with aid of HierarchyIdHelper.
+
+It introduced really far more simple deletions and queries of children nodes..and coupled with good indexes and some tricks it can yield good performance.
 
 #### NoSQL databases:
 
