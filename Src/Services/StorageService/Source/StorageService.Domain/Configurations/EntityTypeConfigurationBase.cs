@@ -4,10 +4,16 @@ using StorageService.Domain.Entities;
 
 namespace StorageService.Domain.Configurations
 {
-    public abstract class EntityTypeConfigurationBase<TEntityBase> : IEntityTypeConfiguration<TEntityBase> where TEntityBase : EntityBase
+    public abstract class EntityTypeConfigurationBase<TEntityBase> : IEntityTypeConfiguration<TEntityBase> where TEntityBase : HierarchyHierarchyEntityBase
     {
         public void Configure(EntityTypeBuilder<TEntityBase> builder)
         {
+
+            builder.HasIndex(x => x.HierarchyId);
+
+            builder.Property(x => x.HierarchyId)
+                .HasDefaultValue(HierarchyHelper.GetRoot());
+
             builder.Property(x => x.DateCreated)
                 .HasDefaultValueSql("getutcdate()");
 

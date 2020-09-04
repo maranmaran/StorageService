@@ -1,21 +1,21 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.Storage;
+using StorageService.Domain;
+using StorageService.Domain.Entities;
+using StorageService.Persistence.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.EntityFrameworkCore.Storage;
-using StorageService.Domain;
-using StorageService.Domain.Entities;
-using StorageService.Persistence.Interfaces;
 
 [assembly: InternalsVisibleTo("Tests.Persistence")]
 namespace StorageService.Persistence.Repositories
 {
-    internal class Repository<TEntity> : IRepository<TEntity> where TEntity : EntityBase
+    internal class Repository<TEntity> : IRepository<TEntity> where TEntity : HierarchyHierarchyEntityBase
     {
         private readonly ApplicationDbContext _context;
         private protected readonly DbSet<TEntity> Entities;
@@ -25,7 +25,6 @@ namespace StorageService.Persistence.Repositories
             _context = context;
             Entities = _context.Set<TEntity>();
         }
-
 
         public async Task<IDbContextTransaction> CreateTransactionAsync(CancellationToken cancellationToken)
         {

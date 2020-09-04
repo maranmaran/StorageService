@@ -22,7 +22,7 @@ namespace StorageService.Business.Commands.File.Delete
         {
             try
             {
-                await _repository.Delete(request.Id, cancellationToken: cancellationToken);
+                await _repository.Delete(request.Id, cancellationToken);
 
                 return Unit.Value;
             }

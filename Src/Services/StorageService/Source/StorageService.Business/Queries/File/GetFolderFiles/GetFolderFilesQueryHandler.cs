@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using StorageService.Persistence.DTOModels;
 using StorageService.Persistence.Interfaces;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace StorageService.Business.Queries.File.GetFolderFiles
 {
@@ -21,9 +21,9 @@ namespace StorageService.Business.Queries.File.GetFolderFiles
 
         public async Task<IEnumerable<FileDto>> Handle(GetFolderFilesQuery request, CancellationToken cancellationToken)
         {
-            var entities = (await _repository.GetAll(
+            var entities = await _repository.GetAll(
                 file => file.ParentFolderId == request.ParentFolderId, 
-                cancellationToken: cancellationToken));
+                cancellationToken: cancellationToken);
 
             return _mapper.Map<IEnumerable<FileDto>>(entities);
         }

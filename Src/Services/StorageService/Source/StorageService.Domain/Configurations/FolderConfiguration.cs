@@ -10,7 +10,9 @@ namespace StorageService.Domain.Configurations
         {
             builder.Property(x => x.Name).HasMaxLength(250);
 
-            builder.HasIndex(x => x.ParentFolderId);
+            //builder.HasIndex(x => x.ParentFolderId);
+
+  
 
             builder
                 .HasMany(x => x.Files)
@@ -18,17 +20,17 @@ namespace StorageService.Domain.Configurations
                 .HasForeignKey(x => x.ParentFolderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder
-                .HasMany(x => x.Folders)
-                .WithOne(x => x.ParentFolder)
-                .HasForeignKey(x => x.ParentFolderId)
-                .OnDelete(DeleteBehavior.NoAction);
+            //builder
+            //    .HasMany(x => x.Folders)
+            //    .WithOne(x => x.ParentFolder)
+            //    .HasForeignKey(x => x.ParentFolderId)
+            //    .OnDelete(DeleteBehavior.NoAction);
 
-            builder
-                .HasOne(x => x.ParentFolder)
-                .WithMany(x => x.Folders)
-                .HasForeignKey(x => x.ParentFolderId)
-                .OnDelete(DeleteBehavior.NoAction);
+            //builder
+            //    .HasOne(x => x.ParentFolder)
+            //    .WithMany(x => x.Folders)
+            //    .HasForeignKey(x => x.ParentFolderId)
+            //    .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -12,19 +12,14 @@ namespace StorageService.Domain.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    HierarchyId = table.Column<string>(nullable: true, defaultValue: "/"),
                     DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "getutcdate()"),
                     DateModified = table.Column<DateTime>(nullable: false, defaultValueSql: "getutcdate()"),
-                    Name = table.Column<string>(maxLength: 250, nullable: true),
-                    ParentFolderId = table.Column<Guid>(nullable: true)
+                    Name = table.Column<string>(maxLength: 250, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Folders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Folders_Folders_ParentFolderId",
-                        column: x => x.ParentFolderId,
-                        principalTable: "Folders",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -32,6 +27,7 @@ namespace StorageService.Domain.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    HierarchyId = table.Column<string>(nullable: true, defaultValue: "/"),
                     DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "getutcdate()"),
                     DateModified = table.Column<DateTime>(nullable: false, defaultValueSql: "getutcdate()"),
                     Name = table.Column<string>(maxLength: 250, nullable: true),
@@ -49,14 +45,24 @@ namespace StorageService.Domain.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Files_HierarchyId",
+                table: "Files",
+                column: "HierarchyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Files_ParentFolderId",
                 table: "Files",
                 column: "ParentFolderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Folders_ParentFolderId",
+                name: "IX_Files_Name_ParentFolderId",
+                table: "Files",
+                columns: new[] { "Name", "ParentFolderId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Folders_HierarchyId",
                 table: "Folders",
-                column: "ParentFolderId");
+                column: "HierarchyId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

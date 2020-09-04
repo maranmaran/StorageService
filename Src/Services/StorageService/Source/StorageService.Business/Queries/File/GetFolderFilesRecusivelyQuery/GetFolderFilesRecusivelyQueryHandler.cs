@@ -1,18 +1,17 @@
-﻿using System;
+﻿using AutoMapper;
+using LinqKit;
+using MediatR;
+using StorageService.Business.Queries.Folder.GetParentHierarchy;
+using StorageService.Business.Settings;
+using StorageService.Persistence.DTOModels;
+using StorageService.Persistence.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using LinqKit;
-using MediatR;
-using StorageService.Business.Queries.File.GetFolderFiles;
-using StorageService.Business.Queries.Folder.GetContents;
-using StorageService.Business.Settings;
-using StorageService.Persistence.DTOModels;
-using StorageService.Persistence.Interfaces;
 
 [assembly: InternalsVisibleTo("Tests.Business")]
 namespace StorageService.Business.Queries.File.GetFolderFilesRecusivelyQuery
@@ -34,64 +33,34 @@ namespace StorageService.Business.Queries.File.GetFolderFilesRecusivelyQuery
 
         public async Task<IEnumerable<FileDto>> Handle(GetFolderFilesRecusivelyQuery request, CancellationToken cancellationToken)
         {
-            return await SearchFilesRecursively(
-                nameQuery: GetNameFilter(request.Name), 
-                parentFolderId: request.ParentFolderId, 
-                limit: _settings.FilesQueryLimit, 
-                cancellationToken: cancellationToken
-           );
+            // get hierarchy
+            var hierarchyId = await _mediator.Send(new GetParentHierarchyQuery(request.ParentFolderId), cancellationToken);
+         
+            // build filter to query data
+            var filter = GetFilter(hierarchyId, request.Name);
+            
+            // retrieve data
+            var files = await _repository.GetAll(filter, cancellationToken: cancellationToken);
+            
+            // limit data
+            var limitedFiles = files.Take(_settings.FilesQueryLimit);
+
+            // return
+            return _mapper.Map<IEnumerable<FileDto>>(limitedFiles);
         }
 
         /// <summary>
-        /// Recursively delete all dependant children folders
+        /// Builds filter for filtering files by hierarchy and name in startsWith fashion or retrieve all if null
         /// </summary>
-        private async Task<IEnumerable<FileDto>> SearchFilesRecursively(Expression<Func<FileDto, bool>> nameQuery, Guid? parentFolderId, int limit,  CancellationToken cancellationToken)
+        public Expression<Func<Domain.Entities.File, bool>> GetFilter(string hierarchyId, string nameQuery)
         {
-            // get current level folder files
-            var folderFiles = await _mediator.Send(new GetFolderFilesQuery(parentFolderId), cancellationToken);
+            // hierarchy query is default
+            var predicate = PredicateBuilder.New<Domain.Entities.File>(x => x.HierarchyId.StartsWith(hierarchyId));
 
-            // do search
-            var files = folderFiles
-                .Where(nameQuery.Compile())
-                .Take(limit)
-                .ToList();
-
-            // assert limitations
-            if (files.Count >= limit)
-                return files.Take(limit);
-
-            limit -= files.Count;
-
-            // go on recursively for all children folders until you have hit the limitation if you're clear 
-            var childFoldersToCheck = await _mediator.Send(new GetFolderContentsQuery(parentFolderId), cancellationToken);
-            foreach (var child in childFoldersToCheck)
+            // query by name only if we have any query. Otherwise retrieve all results
+            if (!string.IsNullOrWhiteSpace(nameQuery))
             {
-                var childFiles = (await SearchFilesRecursively(nameQuery, child.Id, limit, cancellationToken)).ToList();
-
-                if (childFiles.Count >= limit)
-                {
-                    files.AddRange(childFiles.Take(limit));
-                    break;
-                }
-
-                limit -= childFiles.Count;
-
-                files.AddRange(childFiles);
-            }
-
-            return files;
-        }
-
-        /// <summary>
-        /// Builds name filter
-        /// </summary>
-        private Expression<Func<FileDto, bool>> GetNameFilter(string nameQuery)
-        {
-            var predicate = PredicateBuilder.New<FileDto>(true);
-
-            if(!string.IsNullOrWhiteSpace(nameQuery))
-            {
-                predicate.And(f => f.Name.StartsWith(nameQuery));
+                predicate.And(x => x.Name.StartsWith(nameQuery));
             }
 
             return predicate;

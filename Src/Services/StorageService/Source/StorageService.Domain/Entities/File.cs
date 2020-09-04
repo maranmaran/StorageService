@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Types;
+using System;
 
 namespace StorageService.Domain.Entities
 {
-    public class File : EntityBase
+    public class File : HierarchyHierarchyEntityBase
     {
         public string Name { get; set; }
 

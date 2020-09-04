@@ -10,8 +10,7 @@ namespace StorageService.Domain.Configurations
         {
             builder.Property(x => x.Name).HasMaxLength(250);
 
-            builder.HasIndex(x => x.Name);
-            builder.HasIndex(x => x.ParentFolderId);
+            builder.HasIndex(x => new { x.Name, x.ParentFolderId });
 
             builder
                 .HasOne(x => x.ParentFolder)

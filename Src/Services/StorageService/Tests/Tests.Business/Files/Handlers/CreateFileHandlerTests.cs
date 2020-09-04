@@ -1,8 +1,11 @@
 ﻿using Common.Exceptions;
-using StorageService.Business.Commands.File.Create;
-using StorageService.Domain.Entities;
-using StorageService.Persistence.Interfaces;
+using MediatR;
 using Moq;
+using StorageService.Business.Commands.File.Create;
+using StorageService.Business.Queries.Folder.Get;
+using StorageService.Domain.Entities;
+using StorageService.Persistence.DTOModels;
+using StorageService.Persistence.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,7 +33,14 @@ namespace Tests.Business.Files.Handlers
             insertSetup.ReturnsAsync(mockRes);
             insertSetup.Callback((File file, CancellationToken _) => fileToAssert = file);
 
-            var handler = new CreateFileCommandHandler(repositoryMock.Object, AutomapperFactory.Get());
+            var _mediatorMock = new Mock<IMediator>();
+            _mediatorMock.Setup(x => x.Send(It.IsAny<GetFolderQuery>(), CancellationToken.None)).ReturnsAsync(new FolderDto()
+            {
+                HierarchyId = "/Test/"
+            });
+
+
+            var handler = new CreateFileCommandHandler(repositoryMock.Object, AutomapperFactory.Get(), _mediatorMock.Object);
             
             // act
             var result = await handler.Handle(request, CancellationToken.None);
@@ -56,7 +66,15 @@ namespace Tests.Business.Files.Handlers
             var repositoryMock = new Mock<IRepository<File>>();
             repositoryMock.Setup(x => x.Insert(It.IsAny<File>(), CancellationToken.None)).ThrowsAsync(new Exception());
 
-            var handler = new CreateFileCommandHandler(repositoryMock.Object, AutomapperFactory.Get());
+
+            var _mediatorMock = new Mock<IMediator>();
+            _mediatorMock.Setup(x => x.Send(It.IsAny<GetFolderQuery>(), CancellationToken.None)).ReturnsAsync(new FolderDto()
+            {
+                HierarchyId = "/Test/"
+            });
+
+
+            var handler = new CreateFileCommandHandler(repositoryMock.Object, AutomapperFactory.Get(), _mediatorMock.Object);
 
             // act
             await Assert.ThrowsAsync<CreateException>(() => handler.Handle(request, CancellationToken.None));

@@ -2,9 +2,10 @@
 
 namespace StorageService.Domain.Interfaces
 {
-    public interface IEntity
+    public interface IHierarchyEntity
     {
-        Guid Id { get; set; }
+        public Guid Id { get; set; }
+        public string HierarchyId { get; set; }
         DateTime DateCreated { get; set; }
         DateTime DateModified { get; set; }
     }

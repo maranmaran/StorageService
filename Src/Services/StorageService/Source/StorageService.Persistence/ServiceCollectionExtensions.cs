@@ -18,7 +18,9 @@ namespace StorageService.Persistence
             // Add database
             services.AddDbContext<ApplicationDbContext>(o =>
             {
-                o.UseSqlServer(configuration.GetSection(nameof(DatabaseSettings))["ConnectionString"]);
+                o.UseSqlServer(
+                    configuration.GetSection(nameof(DatabaseSettings))["ConnectionString"]
+                );
                 o.EnableSensitiveDataLogging();
                 o.EnableDetailedErrors();
                 o.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
@@ -29,7 +31,7 @@ namespace StorageService.Persistence
 
             // add repositories to DI
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-            //services.AddTransient<IPokemonRepository, PokemonRepository>();
+            services.AddTransient<IFolderRepository, FolderRepository>();
         }
 
 
