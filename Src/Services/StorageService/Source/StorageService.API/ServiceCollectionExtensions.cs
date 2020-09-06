@@ -45,7 +45,7 @@ namespace StorageService.API
         {
             services.AddSwaggerGen(action =>
             {
-                action.SwaggerDoc("v1", new OpenApiInfo { Title = "Items API", Version = "1" });
+                action.SwaggerDoc("v1", new OpenApiInfo { Title = "Storage API", Version = "1" });
 
 
                 // for swagger comments
