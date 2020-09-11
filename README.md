@@ -25,7 +25,6 @@
 
 ## Introduction:
 
-### [View on heroku](https://storage-svc-p3.herokuapp.com/api/index.html) 
 <p>The service API should be implemented using .NET Core Web API.</p>
 
 It should contain endpoints for:
@@ -77,7 +76,6 @@ Dependancies are SQL server and SEQ for structured logging
 #### Heroku
 As a free resource and easy to setup I deployed this app on Heroku via build docker image pushed to heroku registry and released there
 
-* [View on heroku](https://storage-svc-p3.herokuapp.com/api/index.html) 
 * [Official docs](https://devcenter.heroku.com/categories/deploying-with-docker)
 * [Medium article](https://medium.com/better-programming/how-to-containerize-and-deploy-apps-with-docker-and-heroku-b1c49e5bc070)
 
