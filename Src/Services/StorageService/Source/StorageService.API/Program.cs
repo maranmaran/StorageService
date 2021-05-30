@@ -2,11 +2,13 @@ using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 using StorageService.Domain;
+using StorageService.Persistence;
 
 namespace StorageService.API
 {
@@ -22,11 +24,16 @@ namespace StorageService.API
 
                 var loggerFactory = services.GetService<ILoggerFactory>();
                 var logger = loggerFactory.CreateLogger<Program>();
+                var config = services.GetService<IConfiguration>();
+                var env = services.GetService<IWebHostEnvironment>();
+
                 try
                 {
                     // ==================== MIGRATIONS ==================
-                    // comment if you don't want seed values in migrations
-                    MigrateDb(services, logger);
+                    if (env.IsDevelopment() && config.GetValue<bool>(nameof(DatabaseSettings.MigrationEnabled)))
+                    {
+                        MigrateDb(services, logger);
+                    }
 
                     logger.LogInformation($"Running {Assembly.GetExecutingAssembly().FullName}");
                     host.Run();
@@ -49,10 +56,10 @@ namespace StorageService.API
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                }).ConfigureLogging(logging =>
+                }).ConfigureLogging((ctx, logging) =>
                 {
                     logging.ClearProviders();
-                    logging.SetMinimumLevel(LogLevel.Trace); // App settings override this
+                    logging.AddConfiguration(ctx.Configuration.GetSection("Logging"));
                 })
                 .UseNLog();
 
