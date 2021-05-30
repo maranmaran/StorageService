@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("Tests.Persistence")]
 namespace StorageService.Persistence.Repositories
 {
-    internal class Repository<TEntity> : IRepository<TEntity> where TEntity : HierarchyHierarchyEntityBase
+    internal class Repository<TEntity> : IRepository<TEntity> where TEntity : HierarchyEntityBase
     {
         private readonly ApplicationDbContext _context;
         private protected readonly DbSet<TEntity> Entities;

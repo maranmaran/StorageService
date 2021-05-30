@@ -10,7 +10,7 @@ using StorageService.Domain.Entities;
 
 namespace StorageService.Persistence.Interfaces
 {
-    public interface IRepository<TEntity> where TEntity : HierarchyHierarchyEntityBase
+    public interface IRepository<TEntity> where TEntity : HierarchyEntityBase
     {
         /// <summary>
         /// Creates transaction

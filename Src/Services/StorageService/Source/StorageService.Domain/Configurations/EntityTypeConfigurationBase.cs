@@ -4,7 +4,7 @@ using StorageService.Domain.Entities;
 
 namespace StorageService.Domain.Configurations
 {
-    public abstract class EntityTypeConfigurationBase<TEntityBase> : IEntityTypeConfiguration<TEntityBase> where TEntityBase : HierarchyHierarchyEntityBase
+    public abstract class EntityTypeConfigurationBase<TEntityBase> : IEntityTypeConfiguration<TEntityBase> where TEntityBase : HierarchyEntityBase
     {
         public void Configure(EntityTypeBuilder<TEntityBase> builder)
         {

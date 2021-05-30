@@ -3,7 +3,7 @@ using System;
 
 namespace StorageService.Domain.Entities
 {
-    public class File : HierarchyHierarchyEntityBase
+    public class File : HierarchyEntityBase
     {
         public string Name { get; set; }
 

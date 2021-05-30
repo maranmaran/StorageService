@@ -3,7 +3,7 @@ using System;
 
 namespace StorageService.Domain.Entities
 {
-    public abstract class HierarchyHierarchyEntityBase : IHierarchyEntity
+    public abstract class HierarchyEntityBase : IHierarchyEntity
     {
         public Guid Id { get; set; }
         public string HierarchyId { get; set; }
