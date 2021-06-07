@@ -137,7 +137,7 @@ namespace StorageService.API
         /// </summary>
         public static void ConfigureAutomapper(this IServiceCollection services)
         {
-            services.AddSingleton<IMapper>(provider =>
+            services.AddSingleton(provider =>
             {
                 var config = new MapperConfiguration(c =>
                 {

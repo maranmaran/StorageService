@@ -30,7 +30,7 @@ namespace StorageService.API
                 try
                 {
                     // ==================== MIGRATIONS ==================
-                    if (env.IsDevelopment() && config.GetValue<bool>(nameof(DatabaseSettings.MigrationEnabled)))
+                    if (env.IsDevelopment() && config.GetValue<bool>($"{nameof(DatabaseSettings)}:{nameof(DatabaseSettings.MigrationEnabled)}"))
                     {
                         MigrateDb(services, logger);
                     }
