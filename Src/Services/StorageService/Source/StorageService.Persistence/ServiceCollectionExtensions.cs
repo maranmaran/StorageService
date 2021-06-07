@@ -19,7 +19,7 @@ namespace StorageService.Persistence
             services.AddDbContext<ApplicationDbContext>(o =>
             {
                 o.UseSqlServer(
-                    configuration.GetValue<string>($"{nameof(DatabaseSettings)}:{nameof(DatabaseSettings.ConnectionString)}"),
+                    configuration.GetValue<string>($"{nameof(DatabaseSettings)}:{nameof(DatabaseSettings.ConnectionString)}")
                 );
                 o.EnableSensitiveDataLogging();
                 o.EnableDetailedErrors();
